@@ -1,0 +1,121 @@
+#include <BluetoothSerial.h>
+#include <DHT.h>
+
+//LIGHT_SENSOR_PIN liga = V5, 36, GND
+int LIGHT_SENSOR_PIN = 36;
+bool SENT_MENU = false;
+
+//LIGHT_SENSOR_PIN liga = V5, 19, GND
+#define DHTPIN 19 // Defina a porta GPIO à qual o sensor DHT está conectado
+
+#define pino_sinal_analogico 2
+const int VALOR_MAXIMO = 3400; //Valor com solo seco
+const int VALOR_MINIMO = 1400; //Valor com solo umido
+
+#define DHTTYPE DHT11 // Defina o tipo de sensor que você está usando (DHT11 ou DHT22)
+DHT dht(DHTPIN, DHTTYPE);
+
+
+#if !defined(CONFIG_BT_ENABLED) || !defined(CONFIG_BLUEDROID_ENABLED)
+#error Bluetooth is not enabled! Please run make menuconfig to and enable it
+#endif
+
+BluetoothSerial SerialBT;
+
+ 
+void callback(esp_spp_cb_event_t event, esp_spp_cb_param_t *param){
+  if(event == ESP_SPP_SRV_OPEN_EVT){
+    SerialBT.println("1. Sensor de Luz (LDR)");
+    SerialBT.println("2. Sensor de humidade");
+    SerialBT.println("3. Sensor de temperatura");
+    SerialBT.println("4. Humidade da terra");
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  SerialBT.register_callback(callback);
+  SerialBT.begin("Fortuna"); //Bluetooth device name
+  Serial.println("The device started, now you can pair it with bluetooth!");
+  
+  pinMode(pino_sinal_analogico, INPUT);
+  dht.begin();
+}
+
+void loop() {
+  if (Serial.available()) {
+    SerialBT.write(Serial.read());
+  }
+  if (SerialBT.available()) {
+    char incomingChar = SerialBT.read();
+    switch (incomingChar) {
+      case '1':
+        fuction_LDR_sensor();
+        break;
+      case '2':
+        HT_sensor();
+        break;
+      case '3':
+        temperatura();
+        break;
+      case '4':
+        humidade_terra();
+        break;
+    }
+  }
+  delay(20);
+}
+
+void fuction_LDR_sensor(){
+  int analogValue = analogRead(LIGHT_SENSOR_PIN);
+
+  SerialBT.print("Nível Luminosidade = ");
+  SerialBT.print(analogValue);   // the raw analog reading
+
+  // We'll have a few threshholds, qualitatively determined
+  if (analogValue < 40) {
+    SerialBT.println(" => Escuro");
+  } else if (analogValue < 800) {
+    SerialBT.println(" => Lusco-Fusco");
+  } else if (analogValue < 2000) {
+    SerialBT.println(" => Claro");
+  } else if (analogValue < 3200) {
+    SerialBT.println(" => Luminoso");
+  } else {
+    SerialBT.println(" => Muito Luminoso");
+  }
+}
+
+void HT_sensor(){
+  float humidade = dht.readHumidity(); // Leia a umidade relativa em porcentagem
+
+  if (isnan(humidade)) {
+    SerialBT.println("Erro sensor de humidade");
+  } 
+  else {
+    SerialBT.println("A humidade está a " + String(humidade) + "%");
+  }
+}
+
+void temperatura(){
+  float temperatura = dht.readTemperature(); // Leia a temperatura em graus Celsius
+
+  if (isnan(temperatura)) {
+    SerialBT.println("Erro sensor de temperatura");
+  } 
+  else {
+    SerialBT.println("A temperatura está a " + String(temperatura) + "ºC");
+  }
+}
+
+void humidade_terra(){
+  float humidade_terra = analogRead(pino_sinal_analogico); // Leia a temperatura em graus Celsius
+  int leitura_sensor = map(humidade_terra, VALOR_MINIMO, VALOR_MAXIMO, 100, 0);
+
+  if (isnan(humidade_terra)) {
+    SerialBT.println("Erro sensor de humidade da terra");
+  } 
+  else {
+    SerialBT.println("A humidade da terra está a " + String(leitura_sensor) + "% " + humidade_terra);
+  }
+}

@@ -1,0 +1,158 @@
+int ledEstrada1[] = {4,5,6}; // [0] = Red, [1] = Yellow, [2] = Green
+int ledPassadeira1[] = {2,3};
+int ledEstrada2[] = {8,9,10}; // [0] = Red, [1] = Yellow, [2] = Green
+int ledPassadeira2[] = {11,12};
+
+float pause = 5000;
+float pause_amarelo=pause*0.3;
+
+int button1 = 19;
+int button2 = 14;
+
+int i=0 ,x=0;
+
+void setup() {
+
+  for(i = 0; i < 3; i++){
+    pinMode(ledEstrada1[i], OUTPUT);
+    pinMode(ledEstrada2[i], OUTPUT);
+  }
+  for(i = 0; i < 2; i++){
+    pinMode(ledPassadeira1[i], OUTPUT);
+    pinMode(ledPassadeira2[i], OUTPUT);
+  }
+  pinMode(button1, INPUT_PULLUP);
+  pinMode(button2, INPUT_PULLUP);
+
+
+}
+
+
+
+void loop() {
+  //teste_leds_on();
+  //teste_leds_off();
+  
+  estrada1();
+  is_button(pause);
+  estrada1Yellow();
+  is_button(pause_amarelo);
+  estrada2();
+  is_button(pause);
+  estrada2Yellow();
+  is_button(pause_amarelo);
+
+}
+
+void teste_leds_on(){
+  
+  //Leds estrada1
+  digitalWrite(ledEstrada1[0], HIGH); //Estrada1 vermelho ON
+  digitalWrite(ledEstrada1[1], HIGH); //Estrada1 amarelo ON
+  digitalWrite(ledEstrada1[2], HIGH); //Estrada1 verde ON
+  
+  //leds passadeira1
+  digitalWrite(ledPassadeira1[0], HIGH);  //passadeira1 vermelho ON
+  digitalWrite(ledPassadeira1[1], HIGH);  //passadeira1 verde ON
+
+  //Leds estrada2
+  digitalWrite(ledEstrada2[0], HIGH); //Estrada2 vermelho ON
+  digitalWrite(ledEstrada2[1], HIGH); //Estrada2 amarelo ON
+  digitalWrite(ledEstrada2[2], HIGH); //Estrada2 verde ON
+
+  //leds passadeira2
+  digitalWrite(ledPassadeira2[0], HIGH);    //passadeira2 vermelho ON
+  digitalWrite(ledPassadeira2[1], HIGH);  //passadeira2 verde ON
+}
+
+void teste_leds_off(){
+  
+  //Leds estrada1
+  digitalWrite(ledEstrada1[0], LOW); //Estrada1 vermelho OFF
+  digitalWrite(ledEstrada1[1], LOW); //Estrada1 amarelo OFF
+  digitalWrite(ledEstrada1[2], LOW); //Estrada1 verde OFF
+  
+  //leds passadeira1
+  digitalWrite(ledPassadeira1[0], LOW);  //passadeira1 vermelho OFF
+  digitalWrite(ledPassadeira1[1], LOW);  //passadeira1 verde OFF
+
+  //Leds estrada2
+  digitalWrite(ledEstrada2[0], LOW); //Estrada2 vermelho OFF
+  digitalWrite(ledEstrada2[1], LOW); //Estrada2 amarelo OFF
+  digitalWrite(ledEstrada2[2], LOW); //Estrada2 verde OFF
+
+  //leds passadeira2
+  digitalWrite(ledPassadeira2[0], LOW);  //passadeira2 vermelho OFF
+  digitalWrite(ledPassadeira2[1], LOW);  //passadeira2 verde OFF
+}
+
+void estrada1(){
+// [0] = Red, [1] = Yellow, [2] = Green
+  digitalWrite(ledEstrada1[1], LOW);    //Estrada1 amarelo OFF
+  digitalWrite(ledPassadeira1[1], LOW); // Passadeira1 vermelho OFF
+  digitalWrite(ledPassadeira1[0], HIGH); // Passadeira1 verde ON 
+
+  digitalWrite(ledEstrada1[1], LOW);  // Estrada1 amarelo OFF
+  digitalWrite(ledEstrada1[0], HIGH); // Estrada1 vermelho ON
+  
+
+  digitalWrite(ledPassadeira2[0], LOW); // Passadeira2 Verde OFF
+  digitalWrite(ledPassadeira2[1], HIGH); // Passadeira2 vermelho ON
+
+  digitalWrite(ledEstrada2[0], LOW); //Estrada2 Vermelho OFF
+  digitalWrite(ledEstrada2[2], HIGH); // Estrada2 Verde ON
+}
+
+void estrada1Yellow(){
+  digitalWrite(ledEstrada2[2], LOW); // Estrada2 Verde OFF
+  digitalWrite(ledEstrada2[1], HIGH);  // Estrada1 Amarelo ON
+}
+
+
+void estrada2(){
+  // [0] = Red, [1] = Yellow, [2] = Green
+  digitalWrite(ledEstrada2[1], LOW); //Estrada2 amarelo OFF
+  digitalWrite(ledPassadeira2[1], LOW); // Passadeira2 Vermelho OFF
+  digitalWrite(ledPassadeira2[0], HIGH); // Passadeira2 Verde ON
+
+  digitalWrite(ledEstrada2[1], LOW);  // Estrada2 amarelo OFF
+  digitalWrite(ledEstrada2[0], HIGH); // Estrada2 Vermelho ON
+
+  digitalWrite(ledPassadeira1[0], LOW); // Passadeira Verde OFF
+  digitalWrite(ledPassadeira1[1], HIGH); // Passadeira Vermelho ON
+
+  digitalWrite(ledEstrada1[0], LOW);  //Estrada1 Vermelho OFF
+  digitalWrite(ledEstrada1[2], HIGH); // Estrada1 Verde ON
+}
+
+void estrada2Yellow(){
+  digitalWrite(ledEstrada1[2], LOW); // Estrada1 Verde OFF
+  digitalWrite(ledEstrada1[1], HIGH); // Estrada2 Amarelo OFF
+}
+
+//Espera receber o botão precionado
+void is_button(float pause){
+
+    for(i=0; i<pause; i++){
+      if(digitalRead(button1) == LOW ){
+        for(x=0; x<pause_amarelo; x++){
+          estrada2Yellow();
+          delay(1);
+        }
+        estrada1();
+        digitalWrite(ledEstrada1[2], LOW); //Estrada1 Vermelho OFF
+        i=0;
+       }
+      else if(digitalRead(button2) == LOW){
+
+        for(x=0; x<pause_amarelo ; x++){
+          estrada1Yellow();
+          delay(1);
+        }
+          estrada2();
+          digitalWrite(ledEstrada2[2], LOW); //Estrada1 Vermelho OFF
+          i=0;
+      }
+    delay(1);
+  }
+}

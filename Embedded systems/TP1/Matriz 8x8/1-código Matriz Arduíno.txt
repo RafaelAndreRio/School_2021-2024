@@ -1,0 +1,748 @@
+/**
+ ** Sistemas Embebidos**
+ *
+ * @file codigo Matrix arduino
+ * @brief Programa de controlo de matrix 8x8
+ *
+ * Programa Arduino que simula um Dado, mostranto as iniciais dos participantes do grupo.
+ * Desenvolvido por Diogo Fernades, Ivo Encarnação, Rafael Rio, Ricardo Fortuna
+ */
+
+// Pinos que controlam as linhas
+int linhas[8] = {13, 8, 17, 10, 5, 16, 4, 14}; 
+
+// Pinos que controlam as colunas 
+int colunas[8] = {9, 3, 2, 12, 15, 11, 7, 6}; 
+
+int time_delay=500;
+int button = 18;
+int buzina = 19;
+
+byte ON = 1, OFF = 0;
+
+//Inicialização dos pinos OUTPUT/INPUT
+void setup() {
+  for (int i = 2; i < 18; i++) { // Vai de 2 até 17 definindo os pinos como saida
+    pinMode(i, OUTPUT);
+  }
+    pinMode(button, INPUT);
+
+
+} 
+
+void loop() {
+
+print_Letra_R();
+ispick();
+
+print_Letra_D();
+ispick();
+
+print_Letra_I();
+ispick();
+
+smille();
+ispick();
+
+}
+
+
+/**
+ * @brief Verifica se o botão está pressionado e realiza uma sequência de ações.
+ *
+ * Esta função verifica se um botão está pressionado, se estiver, executa uma sequência de acções onde gera números aleatórios, tocar uma buzina e mostrar o display.
+ *
+ */
+
+
+void ispick(){
+  int i,x,state,y;
+  y=0;
+
+  state=digitalRead(button);
+
+  if (state==HIGH){
+
+    for(i=0; i<10 ; i++){
+     x=random(1,6);
+
+      if(y==x && x<6){
+        x+=1;
+        }
+      else{
+        x-=1;
+      }
+
+      tone(buzina ,500);
+      printByte(x);
+      noTone(buzina);
+      y=x;
+   }
+   for(i=0; i<5 ; i++){
+    tone(buzina ,500);
+    printByte(x);
+    }
+    noTone(buzina);
+
+  }
+}
+
+/**
+ * @brief Exibe o número 1 no um display.
+ *
+ */
+void num_um(){
+  int x;
+  for (x=0; x<time_delay; x++) {
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[3]
+    digitalWrite(colunas[3], ON);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    delayMicroseconds(20);  
+    apagar();
+
+    //Coluna[4]
+    digitalWrite(colunas[4], ON);
+    digitalWrite(linhas[2], OFF); 
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    delayMicroseconds(20);  
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON); 
+    digitalWrite(linhas[2], OFF); 
+    digitalWrite(linhas[3], OFF); 
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+  }
+}
+
+/**
+ * @brief Exibe o número 2 no um display.
+ *
+ */
+void num_dois(){
+  int x;
+  for (x=0; x<time_delay; x++) {
+
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[6]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    delayMicroseconds(20);
+    apagar();
+  }
+}
+
+/**
+ * @brief Exibe o número 3 no um display.
+ *
+ *
+ */
+void num_trez(){
+  int x;
+  for (x=0; x<time_delay; x++) {
+
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[3]
+    digitalWrite(colunas[3], ON);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[4]
+    digitalWrite(colunas[4], ON);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+  }
+}
+
+/**
+ * @brief Exibe o número 4 no um display.
+ *
+ *
+ */
+void num_quatro(){
+ int x;
+  for (x=0; x<time_delay; x++) {
+
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20); 
+    apagar();
+
+
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[6]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+  }
+}
+
+/**
+ * @brief Exibe o número 5 no um display.
+ *
+ *
+ */
+void num_cinco(){
+ int x;
+  for (x=0; x<time_delay; x++) {
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+        //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[3]
+    digitalWrite(colunas[3], ON);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+        //Coluna[4]
+    digitalWrite(colunas[4], ON);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+        //Coluna[1]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+        //Coluna[1]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+  }
+}
+
+/**
+ * @brief Exibe o número 6 no um display.
+ *
+ *
+ */
+void num_seis(){
+ int x;
+  for (x=0; x<time_delay; x++) {
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+        //Coluna[6]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+  }
+}
+
+/**
+ * @brief Exibe a letra D no um display.
+ *
+ */
+void print_Letra_D(){
+  int i, j;
+
+    for (i=0; i<time_delay; i++) {
+    //letra D
+    delayMicroseconds(20);  // coluna 3 - para manter o mesmo temo das outras letras
+    apagar();
+    //D
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[3]
+    digitalWrite(colunas[3], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+      //Coluna[4]
+    digitalWrite(colunas[4], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+     //Coluna[6]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+  }
+}
+
+/**
+ * @brief Exibe a letra 'I' no um display.
+ *
+ */
+void print_Letra_I(){
+  int i, j;
+
+    for (i=0; i<time_delay; i++) {
+    //letra I
+    delayMicroseconds(20);
+    apagar();
+    //I
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[3]
+    digitalWrite(colunas[3], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[4]
+    digitalWrite(colunas[4], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[6]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    delayMicroseconds(20);
+    apagar();
+  }
+}
+
+
+/**
+ * @brief Exibe a letra 'R' no um display.
+ *
+ */
+void print_Letra_R(){
+  int i, j;
+
+    for (i=0; i<time_delay; i++) {
+    //letra R
+    delayMicroseconds(20);
+    apagar();
+    //R
+    //Coluna[0]
+    digitalWrite(colunas[0], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[3]
+    digitalWrite(colunas[3], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+     //Coluna[4]
+    digitalWrite(colunas[4], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[5], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[6]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[0], OFF);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[3], OFF);
+    digitalWrite(linhas[4], OFF);
+    digitalWrite(linhas[6], OFF);
+    digitalWrite(linhas[7], OFF);
+
+    delayMicroseconds(20);  /
+    apagar();
+
+    //Coluna[7]
+    digitalWrite(colunas[7], ON);
+    digitalWrite(linhas[7], OFF);
+    delayMicroseconds(20);
+    apagar();
+  }
+}
+/**
+ * @brief Exibe um Smille no um display.
+ *
+ */
+void smille(){
+ int x;
+  for (x=0; x<time_delay; x++) {
+    //Coluna[0]
+    digitalWrite(colunas[0], ON);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[1]
+    digitalWrite(colunas[1], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[2]
+    digitalWrite(colunas[2], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[3]
+    digitalWrite(colunas[3], ON);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[4]
+    digitalWrite(colunas[4], ON);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[5]
+    digitalWrite(colunas[5], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[6], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[6]
+    digitalWrite(colunas[6], ON);
+    digitalWrite(linhas[1], OFF);
+    digitalWrite(linhas[2], OFF);
+    digitalWrite(linhas[5], OFF);
+    delayMicroseconds(20);
+    apagar();
+
+    //Coluna[7]
+    digitalWrite(colunas[7], ON);
+    digitalWrite(linhas[4], OFF);
+    delayMicroseconds(20);
+    apagar();
+  }
+}
+
+
+/**
+ * @brief Apaga todos os segmentos do display.
+ */
+void apagar() {
+  for (int i=0;i<8;i++) { // 
+    digitalWrite(linhas[i],ON); // apaga todas linhas
+  }
+  for (int i=0;i<8;i++) { // 
+    digitalWrite(colunas[i],OFF); // apaga todas colunas
+  } 
+}
+
+
+/**
+ * @brief Exibe um dígito específico no display, com base no valor fornecido.
+ *
+ * Esta função recebe um valor inteiro e utiliza funções específicas para exibir o dígito correspondente no display.
+ *
+ * @param valorDado O valor inteiro a ser exibido no display. Deve estar no intervalo de 1 a 6 para exibir os dígitos de 1 a 6. Outros valores não terão efeito.
+ *
+ */
+void printByte(int valorDado) {
+  switch (valorDado) {
+    case 1:
+      num_um();
+      break;
+
+    case 2:
+      num_dois();
+      break;
+
+    case 3:
+      num_trez();
+      break;
+
+    case 4:
+      num_quatro();
+      break;
+
+    case 5:
+      num_cinco();
+      break;
+
+    case 6:
+      num_seis();
+      break;
+    default:
+      break;
+  }
+}
